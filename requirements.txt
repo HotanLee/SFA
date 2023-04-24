@@ -1,0 +1,12 @@
+mlflow==2.1.1
+numpy==1.21.6
+Pillow==9.4.0
+requests==2.28.1
+scikit_learn==1.2.0
+scipy==1.7.3
+six==1.16.0
+tensorboardX==2.5.1
+torch==1.12.0+cu116
+torchnet==0.0.4
+torchvision==0.13.0+cu116
+tqdm==4.64.1
