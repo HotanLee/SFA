@@ -1,4 +1,4 @@
-# Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels
+# [IJCAI'23]Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels
 PyTorch Code for the following paper at IJCAI2023
 
 <b>Title</b>: <i>Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels</i>
@@ -20,6 +20,7 @@ Deep neural networks have shown promising results on a wide variety of tasks usi
 * scikit-learn 1.2.0
 
 <b>Experiments</b>
+
 First, install dependencies listed in `requirements.txt`:
 
 ```sh
@@ -39,8 +40,13 @@ python Train_webvision.py
 <b>Acknowledgement</b>
 
 Thanks the following repositories for code reference:
+
 [RoLT](https://github.com/Stomach-ache/RoLT), 
 
 [Classifier-Balancing](https://github.com/facebookresearch/classifier-balancing), 
 
 [DivideMix](https://github.com/LiJunnan1992/DivideMix), etc.
+
+<b>License</b>
+
+This project is licensed under the terms of the MIT license.
