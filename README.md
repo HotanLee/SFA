@@ -1,4 +1,4 @@
-# [IJCAI'23]Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels
+# [IJCAI'23] Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels
 PyTorch Code for the following paper at IJCAI2023
 
 <b>Title</b>: <i>Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels</i>
@@ -37,8 +37,7 @@ python Train_cifar.py --noise_ratio 0.5 --imb_factor 0.01
 python Train_webvision.py
 ```
 
-<b>Acknowledgement</b>
-
+<b>Acknowledgement</b>\
 Thanks the following repositories for code reference:
 
 [RoLT](https://github.com/Stomach-ache/RoLT), 
@@ -47,6 +46,19 @@ Thanks the following repositories for code reference:
 
 [DivideMix](https://github.com/LiJunnan1992/DivideMix), etc.
 
-<b>License</b>
+<!--
+<b>Cite DivideMix</b>\
+If you find the code useful in your research, please consider citing our paper:
 
+<pre>
+@inproceedings{
+    li2023sfa,
+    title={Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels},
+    author={},
+    booktitle={},
+    year={2023},
+}</pre>
+-->
+
+<b>License</b>\
 This project is licensed under the terms of the MIT license.
