@@ -46,19 +46,17 @@ Thanks the following repositories for code reference:
 
 [DivideMix](https://github.com/LiJunnan1992/DivideMix), etc.
 
-<!--
-<b>Cite DivideMix</b>\
+<b>Cite SFA</b>\
 If you find the code useful in your research, please consider citing our paper:
 
 <pre>
 @inproceedings{
     li2023sfa,
     title={Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels},
-    author={},
-    booktitle={},
+    author={Haotian Li and Tong Wei and Hao Yang and Kun Hu and Chong Peng and Libo Sun and Xunliang Cai and Minling Zhang},
+    booktitle={Proceedings of the International Joint Conference on Artificial Intelligence},
     year={2023},
 }</pre>
--->
 
 <b>License</b>\
 This project is licensed under the terms of the MIT license.
