@@ -31,7 +31,7 @@ Next, run the following commands to conduct the experiment:
 
 ```sh
 # Experiment on CIFAR with given label noise and class imbalance
-python Train_cifar.py --noise_ratio 0.5 --imb_factor 0.01
+python Train_cifar.py --dataset cifar10 --noise_ratio 0.5 --imb_factor 0.01
 
 # Experiment on WebVision dataset
 python Train_webvision.py
