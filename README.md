@@ -27,7 +27,7 @@ First, install dependencies listed in `requirements.txt`:
 pip install -r requirements.txt
 ```
 
-Next, run the following commands to conduct the experiment:
+Next, copy your CIFAR data to "./data" and run the following commands to conduct the experiment:
 
 ```sh
 # Experiment on CIFAR with given label noise and class imbalance
