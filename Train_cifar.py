@@ -33,6 +33,9 @@ parser.add_argument('--noise_ratio', default=0.5, type=float, help='noise ratio'
 parser.add_argument('--arch', default='resnet18', type=str, help='resnet18')
 parser.add_argument('-w', '--warm_up', default=30, type=int)
 parser.add_argument('-r', '--resume', default=None, type=int)
+parser.add_argument('--beta', default=0.99, type=float, help='smoothing factor')
+parser.add_argument('--phi', default=1.005, type=float, help='parameter for dynamic threshold')
+parser.add_argument('--sample_rate', default=1, type=int, help='sampling rate of SFA')
 args = parser.parse_args()
 
 def set_seed():
@@ -67,7 +70,6 @@ def train(epoch,net,net2,optimizer,labeled_trainloader,unlabeled_trainloader,cur
         
         # Transform label to one-hot
         labels_x = torch.zeros(batch_size, args.num_class).scatter_(1, labels_x.view(-1,1), 1)        
-        weight_per_sample = w_x.cuda()
         w_x = w_x.view(-1,1).type(torch.FloatTensor) 
 
         inputs_x, inputs_x2, labels_x, w_x = inputs_x.cuda(), inputs_x2.cuda(), labels_x.cuda(), w_x.cuda()
@@ -218,13 +220,17 @@ def eval_train(model, cfeats_EMA, cfeats_sq_EMA):
     total_features = total_features.cuda()
     total_labels = total_labels.cuda()
 
-    # instant centroid estimation
+    # Instant Centroid Estimation
     tau = 1 / args.num_class
+    sampled_class = []  # classes that need to do SFA 
     for i in range(args.num_class):
-        idx_selected = (confs_BS[idx_class[i]] > tau * 1.005**epoch).nonzero(as_tuple=True)[0]
+        idx_selected = (confs_BS[idx_class[i]] > tau * args.phi ** epoch).nonzero(as_tuple=True)[0]
         idx_selected = idx_class[i][idx_selected]
         mask[idx_selected] = True
-
+        if (idx_selected.size(0) > 300):
+            sampled_class.append(i)
+        
+    remained_class = list(set(range(args.num_class)) - set(sampled_class))
     refined_cfeats = get_knncentroids(feats=total_features, labels=total_labels, mask=mask)  # (10, 512)
     
     # stochastic feature averaging
@@ -232,19 +238,20 @@ def eval_train(model, cfeats_EMA, cfeats_sq_EMA):
         cfeats_EMA = refined_cfeats['cl2ncs']
         cfeats_sq_EMA = refined_cfeats['cl2ncs'] ** 2
     else:
-        cfeats_EMA = 0.99 * cfeats_EMA + 0.01 * refined_cfeats['cl2ncs']
-        cfeats_sq_EMA = 0.99 * cfeats_sq_EMA + 0.01 * refined_cfeats['cl2ncs'] ** 2
+        cfeats_EMA = args.beta * cfeats_EMA + (1 - args.beta) * refined_cfeats['cl2ncs']
+        cfeats_sq_EMA = args.beta * cfeats_sq_EMA + (1 - args.beta) * refined_cfeats['cl2ncs'] ** 2
     
     # sample centers from gaussion postier
-    sample_times = 5
     refined_ncm_logits = torch.zeros((num_all_img, args.num_class)).cuda()
-    for i in range(sample_times):
+    for i in range(args.sample_rate):
         mean = cfeats_EMA
         std = np.sqrt(np.clip(cfeats_sq_EMA - mean ** 2, 1e-30, 1e30))
         eps = np.random.normal(size=mean.shape)
         cfeats = mean + std * eps
 
-        refined_cfeats['cl2ncs'] = cfeats
+        refined_cfeats['cl2ncs'][sampled_class] = cfeats[sampled_class]
+        refined_cfeats['cl2ncs'][remained_class] = mean[remained_class]
+
         ncm_classifier.update(refined_cfeats, device=args.gpuid)
         refined_ncm_logits += ncm_classifier(total_features, None)[0]
 
@@ -363,6 +370,8 @@ log_name = store_name + f'_w{warm_up}'
 if args.resume is not None:
     log_name += f'_r{args.resume}'
 
+if not os.path.exists('./checkpoint'):
+    os.mkdir('./checkpoint')
 stats_log = open('./checkpoint/%s'%(log_name)+'_stats.txt','w') 
 test_log = open('./checkpoint/%s'%(log_name)+'_acc.txt','w')
 
@@ -371,8 +380,6 @@ loader = dataloader.cifar_dataloader(args.dataset, imb_type=args.imb_type, imb_f
 args.num_class = 100 if args.dataset == 'cifar100' else 10
 feat_size = 512
 ncm_classifier = KNNClassifier(feat_size, args.num_class)
-current_labels1 = loader.run('warmup').dataset.noise_label
-current_labels2 = loader.run('warmup').dataset.noise_label
 noisy_labels = torch.Tensor(loader.run('warmup').dataset.noise_label).long()
 warmup_trainloader = loader.run('warmup')
 num_all_img = len(warmup_trainloader.dataset)
