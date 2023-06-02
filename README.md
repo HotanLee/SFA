@@ -27,14 +27,20 @@ First, install dependencies listed in `requirements.txt`:
 pip install -r requirements.txt
 ```
 
-Next, copy your CIFAR data to "./data" and run the following commands to conduct the experiment:
+Next, make a directory to store your dataset
+
+```sh
+mkdir path_to_your_data
+```
+
+Then, run the following commands to conduct the experiment:
 
 ```sh
 # Experiment on CIFAR with given label noise and class imbalance
-python Train_cifar.py --dataset cifar10 --noise_ratio 0.5 --imb_factor 0.01
+python Train_cifar.py --dataset cifar10 --noise_ratio 0.5 --imb_factor 0.01 --data_path path_to_your_data
 
 # Experiment on WebVision dataset
-python Train_webvision.py
+python Train_webvision.py --data_path path_to_your_data
 ```
 
 <b>Acknowledgement</b>\
