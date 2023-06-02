@@ -73,31 +73,7 @@ class cifar_dataset(Dataset):
 
             self.real_img_num_list = [0] * self.cls_num
             for i in range(len(self.targets)):
-                self.real_img_num_list[self.targets[i]] += 1
-
-            # if os.path.exists(noise_file):
-            #     noise_label = json.load(open(noise_file,"r"))
-            # else:    #inject noise   
-            #     noise_label = []
-            #     idx = list(range(50000))
-            #     random.shuffle(idx)
-            #     num_noise = int(self.noise_ratio*50000)            
-            #     noise_idx = idx[:num_noise]
-            #     for i in range(50000):
-            #         if i in noise_idx:
-            #             if noise_mode=='sym':
-            #                 if dataset=='cifar10': 
-            #                     noiselabel = random.randint(0,9)
-            #                 elif dataset=='cifar100':    
-            #                     noiselabel = random.randint(0,99)
-            #                 noise_label.append(noiselabel)
-            #             elif noise_mode=='asym':   
-            #                 noiselabel = self.transition[train_label[i]]
-            #                 noise_label.append(noiselabel)                    
-            #         else:    
-            #             noise_label.append(train_label[i])   
-            #     print("save noisy labels to %s ..."%noise_file)        
-            #     json.dump(noise_label,open(noise_file,"w"))       
+                self.real_img_num_list[self.targets[i]] += 1     
             
             if self.mode == 'all':
                 self.train_data = train_data
@@ -217,8 +193,6 @@ class cifar_dataset(Dataset):
         if os.path.exists(noise_file):
             noise_label = json.load(open(noise_file,"r"))
         else:    #inject noise
-            #label_dict = {}
-            #label_dict['clean_labels'] = train_label
             noise_label = []
             num_train = len(self.targets)
             idx = list(range(num_train))
