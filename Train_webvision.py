@@ -207,10 +207,10 @@ def eval_train(epoch, eval_loader, model, num_all_img, cfeats_EMA, cfeats_sq_EMA
         cfeats_sq_EMA = 0.9 * cfeats_sq_EMA + 0.1 * refined_cfeats['cl2ncs'] ** 2
     
     # sample centers from gaussion postier
-    sample_times = 1
+    sample_rate = 1
     refined_ncm_logits = torch.zeros((num_all_img, args.num_class)).to(device)
     ncm_classifier = KNNClassifier(args.feat_size, args.num_class)
-    for i in range(sample_times):
+    for i in range(sample_rate):
         mean = cfeats_EMA
         std = np.sqrt(np.clip(cfeats_sq_EMA - mean ** 2, 1e-30, 1e30))
         eps = np.random.normal(size=mean.shape)
