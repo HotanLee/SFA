@@ -61,6 +61,7 @@ If you find the code useful in your research, please consider citing our paper:
     title={Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels},
     author={Hao-Tian Li and Tong Wei and Hao Yang and Kun Hu and Chong Peng and Li-Bo Sun and Xun-Liang Cai and Min-Ling Zhang},
     booktitle={Proceedings of the International Joint Conference on Artificial Intelligence},
+    pages={3902--3910},
     year={2023},
 }</pre>
 
