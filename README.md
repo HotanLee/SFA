@@ -59,7 +59,7 @@ If you find the code useful in your research, please consider citing our paper:
 @inproceedings{
     li2023sfa,
     title={Stochastic Feature Averaging for Learning with Long-Tailed Noisy Labels},
-    author={Haotian Li and Tong Wei and Hao Yang and Kun Hu and Chong Peng and Libo Sun and Xunliang Cai and Minling Zhang},
+    author={Hao-Tian Li and Tong Wei and Hao Yang and Kun Hu and Chong Peng and Li-Bo Sun and Xun-Liang Cai and Min-Ling Zhang},
     booktitle={Proceedings of the International Joint Conference on Artificial Intelligence},
     year={2023},
 }</pre>
